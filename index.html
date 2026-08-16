@@ -1,0 +1,642 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Vilamoura 70.3">
+<meta name="theme-color" content="#0b3a44">
+<meta name="description" content="Personal 34-week training plan for Ironman 70.3 Vilamoura 2027 — session tracking, goal splits, race-day plan.">
+<meta property="og:title" content="Vilamoura 70.3 — Training">
+<meta property="og:description" content="34-week half-Ironman training plan with session tracking and goal-time calculator.">
+<meta property="og:type" content="website">
+<title>Vilamoura 70.3 — Training</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b3a44'/%3E%3Ctext x='16' y='22' font-family='-apple-system,Arial' font-size='14' font-weight='800' fill='%23fff' text-anchor='middle'%3E70%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'%3E%3Crect width='180' height='180' rx='40' fill='%230b3a44'/%3E%3Cpath d='M0 120 q45 -28 90 0 t90 0 v60 H0 Z' fill='%2314b8a6'/%3E%3Ctext x='90' y='84' font-family='-apple-system,Arial' font-size='58' font-weight='800' fill='%23fff' text-anchor='middle'%3E70.3%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --ink:#0b2b33;--sea:#0b3a44;--teal:#14b8a6;--coral:#f0603a;
+    --sand:#f3f5f4;--surface:#ffffff;--line:#e2e8e7;--muted:#5f7a80;
+    --swim:#1e88c7;--bike:#e08b2a;--run:#2fa36b;--str:#7b5cd6;--rest:#8aa0a6;
+    --shadow:0 1px 2px rgba(11,43,51,.06),0 8px 24px rgba(11,43,51,.06);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"SF Pro Text","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--sand);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.45;
+    padding-bottom:env(safe-area-inset-bottom)}
+  .wrap{max-width:660px;margin:0 auto;padding:0 16px 64px}
+
+  /* header */
+  header{position:relative;overflow:hidden;background:linear-gradient(160deg,#0b3a44 0%,#0e4a52 55%,#0b6b63 100%);
+    color:#eaf6f4;padding:calc(env(safe-area-inset-top) + 20px) 20px 0;border-radius:0 0 26px 26px}
+  header .inner{max-width:660px;margin:0 auto;position:relative;z-index:2}
+  .eyebrow{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#8fd6cd;font-weight:700;margin:0 0 6px}
+  .count{display:flex;align-items:baseline;gap:10px;margin:0}
+  .count b{font-size:52px;line-height:.9;font-weight:800;letter-spacing:-.02em;color:#fff}
+  .count span{font-size:15px;color:#bfe4df;font-weight:600}
+  .subline{margin:6px 0 2px;font-size:13px;color:#a8dad3}
+  .distline{margin:2px 0 0;font-size:12px;color:#7fc4bc;letter-spacing:.02em}
+  .obar{margin:16px 0 0;height:8px;border-radius:99px;background:rgba(255,255,255,.16);overflow:hidden}
+  .obar>i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),#7ef0e2);border-radius:99px;transition:width .5s}
+  .opct{display:flex;justify-content:space-between;margin:8px 0 0;font-size:11px;color:#a8dad3;letter-spacing:.04em}
+  .wave{display:block;width:100%;height:34px;margin-top:10px}
+  .wave path{fill:var(--sand)}
+
+  /* phase strip */
+  .phases{display:flex;gap:6px;margin:18px 0 6px}
+  .phase{flex:1;text-align:center;padding:9px 4px;border-radius:12px;background:var(--surface);border:1px solid var(--line);
+    box-shadow:var(--shadow);font-size:10.5px;font-weight:700;letter-spacing:.04em;color:var(--muted);text-transform:uppercase;line-height:1.25}
+  .phase small{display:block;font-size:9px;font-weight:600;color:#9db2b6;letter-spacing:.02em;margin-top:2px;text-transform:none}
+  .phase.on{background:var(--sea);color:#fff;border-color:var(--sea)}
+  .phase.on small{color:#8fd6cd}
+
+  /* today */
+  .today{background:var(--surface);border:2px solid var(--teal);border-radius:16px;box-shadow:var(--shadow);margin:12px 0 4px;overflow:hidden}
+  .today.today-done{border-color:#1e7a4d}
+  .today-h{padding:14px 16px;display:flex;align-items:baseline;justify-content:space-between;gap:10px;border-bottom:1px solid var(--line)}
+  .today.today-done .today-h{background:#eefbf9}
+  .today-h h2{margin:0;font-size:15px;font-weight:800}
+  .today-h span{font-size:12px;color:var(--muted);font-weight:600;white-space:nowrap}
+  .today-body{padding:4px 8px 8px}
+  .today-msg{margin:14px 16px;font-size:13.5px;color:var(--muted)}
+
+  /* cards */
+  details.card{margin:14px 0 4px;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);overflow:hidden}
+  details.card>summary{list-style:none;cursor:pointer;padding:14px 16px;display:flex;align-items:center;gap:10px;font-weight:700;font-size:14px}
+  details.card>summary::-webkit-details-marker{display:none}
+  .card summary .chev{margin-left:auto;color:var(--muted);transition:transform .2s;font-size:13px}
+  details.card[open]>summary .chev{transform:rotate(90deg)}
+  .card .body{padding:2px 16px 16px;font-size:13.5px;color:#324a50}
+  .card .body p{margin:10px 0}
+  .card .body b{color:var(--ink)}
+  .zones{display:flex;gap:8px;margin:12px 0}
+  .zone{flex:1;border-radius:12px;padding:10px 8px;text-align:center;color:#fff}
+  .zone small{display:block;font-size:10px;letter-spacing:.06em;text-transform:uppercase;opacity:.9}
+  .zone b{font-size:14px}
+  .z1{background:#2fa36b}.z2{background:#e08b2a}.z3{background:#e0533a}
+
+  /* splits + calculator */
+  .split{padding:11px 0;border-bottom:1px solid var(--line);font-size:12.5px}
+  .split:last-of-type{border-bottom:0}
+  .split .sg{color:var(--coral);font-weight:800;font-size:13px;margin-bottom:3px}
+  .split .row{display:flex;gap:10px;flex-wrap:wrap;color:var(--muted)}
+  .split .row u{text-decoration:none;color:var(--ink);font-weight:700}
+  .calc{margin-top:6px;background:#f7faf9;border:1px solid var(--line);border-radius:12px;padding:14px}
+  .goalbtns{display:flex;gap:6px;margin-bottom:12px}
+  .goalbtns button{flex:1;padding:8px 4px;border-radius:9px;border:1px solid var(--line);background:#fff;font-weight:700;font-size:12px;color:var(--muted);cursor:pointer}
+  .goalbtns button.on{background:var(--coral);border-color:var(--coral);color:#fff}
+  .sld{margin:10px 0}
+  .sld label{display:flex;justify-content:space-between;font-size:12px;font-weight:600;margin-bottom:4px}
+  .sld label b{color:var(--teal)}
+  .sld input[type=range]{width:100%;accent-color:var(--teal)}
+  .out{display:flex;gap:8px;margin-top:12px}
+  .out div{flex:1;text-align:center;background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 4px}
+  .out small{display:block;font-size:9px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+  .out b{font-size:15px}
+  .gap{margin-top:12px;font-size:12.5px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+  .gap input{width:64px;border:1px solid var(--line);border-radius:7px;padding:4px 6px;font-size:12px;font-family:inherit}
+  .gapline{margin-top:8px;font-weight:700}
+  .gapline.ok{color:#1e7a4d}.gapline.no{color:#c0432c}
+
+  .lbl{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin:22px 4px 10px}
+
+  /* week */
+  .week{background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow);margin:0 0 12px;overflow:hidden}
+  .week.now{border-color:var(--teal);box-shadow:0 0 0 2px rgba(20,184,166,.25),var(--shadow)}
+  .whead{cursor:pointer;padding:14px 16px;display:flex;align-items:center;gap:12px;user-select:none}
+  .wnum{flex:0 0 auto;width:44px;height:44px;border-radius:12px;background:var(--sand);display:flex;flex-direction:column;align-items:center;justify-content:center;line-height:1}
+  .wnum small{font-size:8px;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+  .wnum b{font-size:18px;color:var(--ink)}
+  .week.now .wnum{background:var(--teal)}
+  .week.now .wnum b,.week.now .wnum small{color:#fff}
+  .wmeta{flex:1;min-width:0}
+  .wmeta .wt{display:flex;align-items:center;gap:8px}
+  .wmeta h3{margin:0;font-size:15px;font-weight:700}
+  .tag{font-size:9.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:3px 7px;border-radius:99px;color:#fff}
+  .tag.base{background:#0e7c86}.tag.build{background:#c8781f}.tag.peak{background:#c0432c}.tag.taper{background:#5b53c0}
+  .wmeta .wf{font-size:12px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ring{--p:0;width:34px;height:34px;border-radius:50%;background:conic-gradient(var(--teal) calc(var(--p)*1%), #e7edec 0);display:flex;align-items:center;justify-content:center;margin-left:auto}
+  .ring i{width:26px;height:26px;border-radius:50%;background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;color:var(--muted);font-style:normal}
+  .ring.done{--p:100}.ring.done i{background:var(--teal);color:#fff}
+  .wbody{display:none;padding:0 12px 8px}
+  .week.open .wbody{display:block}
+
+  /* session */
+  .day{margin:10px 4px 2px;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:#9db2b6;font-weight:700}
+  .sess{display:flex;gap:12px;align-items:flex-start;padding:12px 8px;border-radius:12px}
+  .sess+.sess{border-top:1px solid var(--line)}
+  .disc{flex:0 0 auto;width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;margin-top:1px}
+  .d-swim{background:var(--swim)}.d-bike{background:var(--bike)}.d-run{background:var(--run)}.d-str{background:var(--str)}.d-rest{background:var(--rest)}.d-race{background:var(--coral)}
+  .txt{flex:1;min-width:0}
+  .txt h4{margin:0;font-size:14px;font-weight:700;display:flex;align-items:center;flex-wrap:wrap;gap:6px}
+  .smeta{font-size:11px;color:#9db2b6;font-weight:600;margin-top:2px}
+  .pill{font-size:9px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;padding:2px 7px;border-radius:99px}
+  .e-easy{background:#e3f5ec;color:#1e7a4d}.e-mod{background:#fdf0dd;color:#a5691a}.e-hard{background:#fde7e0;color:#c0432c}.e-race{background:#efe9fb;color:#5b53c0}
+  .starget{margin:6px 0 0;font-size:12.5px;font-weight:700;color:var(--ink)}
+  .steps{margin:7px 0 0;padding:0;list-style:none;border-left:2px solid var(--line);padding-left:10px}
+  .steps li{font-size:12.5px;color:#4a636a;margin:2px 0}
+  .steps li b{color:var(--ink)}
+  .fuel{margin:7px 0 0;font-size:12px;color:#0b5f57;background:#eefbf9;border:1px solid #cdeee8;border-radius:9px;padding:7px 9px}
+  .why{margin:7px 0 0;font-size:12px;color:#5f7a80;font-style:italic}
+  .why b{font-style:normal;color:var(--ink)}
+  .check{flex:0 0 auto;width:30px;height:30px;border-radius:50%;border:2px solid var(--line);background:var(--surface);margin-top:2px;cursor:pointer;position:relative;-webkit-tap-highlight-color:transparent;transition:background .15s,border-color .15s,transform .1s}
+  .check:active{transform:scale(.9)}
+  .check::after{content:"";position:absolute;left:9px;top:4px;width:6px;height:12px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg) scale(0);transition:transform .15s}
+  .check.on{background:var(--teal);border-color:var(--teal)}
+  .check.on::after{transform:rotate(45deg) scale(1)}
+  .sess.on .txt h4 .htext{text-decoration:line-through;text-decoration-color:#c4d2d1;color:var(--muted)}
+
+  /* race-day + milestones + reference */
+  .rd{font-size:13px}
+  .rd .leg{border-left:3px solid var(--coral);padding:2px 0 2px 12px;margin:12px 0}
+  .rd .leg b{display:block;color:var(--ink);font-size:13px}
+  .ms{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}
+  .ms:last-child{border-bottom:0}
+  .ms .check{margin-top:0}
+  .ms.on span{text-decoration:line-through;color:var(--muted)}
+  details.sub{border-top:1px solid var(--line)}
+  details.sub>summary{list-style:none;cursor:pointer;padding:10px 2px;font-weight:600;font-size:13px;color:var(--ink)}
+  details.sub>summary::-webkit-details-marker{display:none}
+  details.sub p{margin:0 2px 10px;font-size:12.5px;color:#4a636a}
+
+  footer{margin:28px 4px 0;text-align:center;color:var(--muted);font-size:12px}
+  .footer-btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+  footer button,.footer-btns button{background:none;border:1px solid var(--line);color:var(--muted);padding:9px 16px;border-radius:99px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+  footer button:hover,.footer-btns button:hover{border-color:var(--teal);color:var(--ink)}
+  .tip{background:#eefbf9;border:1px solid #bfeee7;color:#0b5f57;border-radius:14px;padding:12px 14px;font-size:12.5px;margin:16px 4px 0}
+  .tip b{color:#083f39}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header>
+  <div class="inner">
+    <p class="eyebrow" id="hEyebrow">Ironman 70.3 · Vilamoura–Algarve</p>
+    <p class="count"><b id="togo">—</b><span id="togoUnit">weeks to race</span></p>
+    <p class="subline" id="raceline"></p>
+    <p class="distline" id="distline"></p>
+    <div class="obar"><i id="obar"></i></div>
+    <div class="opct"><span id="opctL">0% complete</span><span id="opctR">0 / 0 sessions</span></div>
+  </div>
+  <svg class="wave" viewBox="0 0 640 34" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M0 18 q80 -20 160 0 t160 0 t160 0 t160 0 V34 H0 Z"></path>
+  </svg>
+</header>
+
+<div class="wrap">
+  <div class="phases" id="phases"></div>
+  <div class="today" id="today"></div>
+
+  <details class="card">
+    <summary>Coach notes — read me first <span class="chev">›</span></summary>
+    <div class="body">
+      <p><b>Two speeds, two rules.</b> Easy days go by <i>heart rate</i> (keep them under 119, slower than feels natural). Hard days go by <i>pace and feel</i>, not HR — heart rate lags 30–60s behind effort, so it's useless for intervals. Every session is tagged
+      <span class="pill e-easy">Easy</span> <span class="pill e-mod">Steady</span> <span class="pill e-hard">Hard</span> <span class="pill e-race">Race pace</span> so you know which rule applies.</p>
+      <div class="zones">
+        <div class="zone z1"><small>Easy</small><b>&lt; 119</b></div>
+        <div class="zone z2"><small>Moderate</small><b>119–155</b></div>
+        <div class="zone z3"><small>Hard</small><b>&gt; 155</b></div>
+      </div>
+      <p><b>~80% easy, ~20% hard.</b> The easy volume is the fix for your low lactate thresholds — bank it and your easy pace quickens on its own. Your easy runs stay easy the whole plan on purpose — the runs get <i>tougher</i> three ways: the long run stretches out (25 min → ~1h45), a weekly tempo comes in during Build, then race-pace runs and bricks arrive in Peak. <b>Lifting stays:</b> upper body full (Mon/Thu), one legs+plyo day kept off long ride/run days. <b>Fuel the work</b> — eat more, not less. <b>Swim edge:</b> surfer/lifeguard, a cold wetsuit Atlantic is home turf.</p>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>Goal times, splits &amp; calculator <span class="chev">›</span></summary>
+    <div class="body">
+      <p>What each finish takes across all three legs. The legs trade off — a quicker swim or bike buys an easier run.</p>
+      <div id="splits"></div>
+      <div class="calc">
+        <div class="goalbtns" id="goalbtns"></div>
+        <div class="sld"><label>Swim time <b><span id="swVal"></span></b></label><input type="range" id="swSld" min="30" max="48" step="1"></div>
+        <div class="sld"><label>Bike time <b><span id="bkVal"></span></b></label><input type="range" id="bkSld" min="135" max="210" step="1"></div>
+        <p style="margin:4px 0 0;font-size:11.5px;color:#9db2b6">+ ~6 min transitions. Run is whatever's left to hit the goal:</p>
+        <div class="out">
+          <div><small>Swim /100m</small><b id="oSwim">—</b></div>
+          <div><small>Bike km/h</small><b id="oBike">—</b></div>
+          <div><small>Run /km</small><b id="oRun">—</b></div>
+        </div>
+        <div class="gap">
+          <b>Where I am now</b> (edit — saves on this device):<br>
+          <span style="font-size:12px;color:var(--muted)">Run /km</span> <input id="curRun" inputmode="decimal" placeholder="6:30">
+          &nbsp;<span style="font-size:12px;color:var(--muted)">Swim /100m</span> <input id="curSwim" inputmode="decimal" placeholder="2:05">
+          &nbsp;<span style="font-size:12px;color:var(--muted)">Bike km/h</span> <input id="curBike" inputmode="decimal" placeholder="27">
+          <div class="gapline" id="gapline"></div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <details class="card">
+    <summary>Race-day execution plan <span class="chev">›</span></summary>
+    <div class="body rd" id="raceday"></div>
+  </details>
+
+  <details class="card">
+    <summary>Why? — quick explainers <span class="chev">›</span></summary>
+    <div class="body" id="why"></div>
+  </details>
+
+  <details class="card">
+    <summary>Milestones <span class="chev">›</span></summary>
+    <div class="body" id="milestones"></div>
+  </details>
+
+  <div class="lbl">The plan · 34 weeks</div>
+  <div id="weeks"></div>
+
+  <div class="tip" id="tip"></div>
+
+  <footer>
+    <div>Ticks &amp; your numbers save in this browser. On mobile: Safari → Share → <b>Add to Home Screen</b>.</div>
+    <div class="footer-btns">
+      <button id="export">Backup progress</button>
+      <button id="importBtn">Restore backup</button>
+      <input type="file" id="importFile" accept=".json,application/json" hidden>
+      <button id="reset">Reset all progress</button>
+    </div>
+  </footer>
+</div>
+
+<script>
+/* ============================================================
+   VILAMOURA 70.3 TRACKER  —  single-file, no dependencies
+   Everything you'd tweak lives in CONFIG. Sessions are generated
+   from the weekly number arrays + phase templates below.
+   ============================================================ */
+(function(){
+  "use strict";
+
+  /* -------------------- CONFIG (edit freely) -------------------- */
+  const CONFIG = {
+    race:  { name:"Ironman 70.3 · Vilamoura–Algarve", dateISO:"2027-04-03",
+             dateLabel:"Saturday 3 April 2027", swim_m:1900, bike_km:90, run_km:21.1 },
+    startISO:"2026-08-10",                 // Monday of week 1
+    zones:  { easyMax:119, modMax:155 },   // heart-rate zone edges (bpm)
+    thresholdPaceNow:"7:30",               // current LT2 run pace /km (from lab test)
+    // Goal scenarios: total finish time + assumed swim/bike/transition minutes. Run = remainder.
+    goals: [
+      { key:"sub6",   label:"Sub-6:00", total:360, swim:42, bike:185, trans:6 },
+      { key:"sub530", label:"Sub-5:30", total:330, swim:38, bike:172, trans:6 },
+      { key:"sub5",   label:"Sub-5:00", total:300, swim:34, bike:154, trans:6 },
+    ],
+    current: { run:"6:30", swim:"2:05", bike:"27" },   // your current numbers (editable in-app)
+    fuel: { carbLow:60, carbHigh:80, fluidLow:500, fluidHigh:750, sodium:500, minMinutes:80 },
+  };
+
+  /* -------- weekly progression (index 0 = week 1) -------- */
+  const RUN  = [25,30,35,25, 35,40,45,35, 45,50,55,40, 55,60,65,50, 65,70,60,45, 45,65,70,55, 75,85,95,70, 95,100,105,80, 60, null]; // long run, min
+  const RIDE = [25,30,35,25, 35,40,45,35, 45,50,55,45, 55,60,65,50, 65,70,55,45, 45,70,75,60, 75,80,85,65, 85,90,90,70, 55, null];   // long ride, km
+  const SWIM = [800,900,1000,800, 1000,1200,1300,1000, 1300,1400,1500,1200, 1500,1600,1700,1400, 1700,1800,1500,1200, 1200,1800,1900,1600, 1900,2000,2200,1700, 2200,2400,2000,1800, 1500, null]; // main swim, m
+  const DELOAD = new Set([4,8,12,16,20,21,28,32]);
+  const SIM    = new Set([27,30]);         // race-simulation weekends
+  const PHASE  = n => n<=12?"base": n<=24?"build": n<=32?"peak":"taper";
+  const PHASE_NAME={base:"Base",build:"Build",peak:"Peak",taper:"Taper"};
+  const FOCUS={base:"Aerobic base — everything easy",build:"Build volume, tempo & bricks",peak:"Race-specific — go long, fuel",taper:"Taper — sharpen and rest"};
+  const OVER={13:"Build begins — tempo + first bricks",19:"Exams — just tick over",20:"Exams + recovery — light week",21:"Holidays — easy, enjoy it",25:"Peak begins — race-pace work starts",27:"Race simulation weekend",30:"Race simulation weekend",33:"Taper — cut volume, stay sharp",34:"Race week — Vilamoura 70.3 🏁"};
+  const EFF={easy:"Easy",mod:"Steady",hard:"Hard",race:"Race pace"};
+
+  /* -------------------- small helpers -------------------- */
+  const DAY=864e5, STORE="vilamoura703.v2", DAY_NAMES=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  const START=new Date(CONFIG.startISO), RACE=new Date(CONFIG.race.dateISO+"T08:00:00");
+  const $=s=>document.querySelector(s);
+  const pad=x=>String(x).padStart(2,"0");
+  const fmtDate=d=>d.toLocaleDateString("en-GB",{day:"numeric",month:"short"});
+  const weekStart=n=>new Date(START.getTime()+(n-1)*7*DAY);
+  const r50=m=>Math.round(m/50)*50;
+  const paceToSec=p=>{const m=String(p).split(":");return m.length===2?(+m[0])*60+(+m[1]):parseFloat(p)*60;};
+  const secToPace=s=>{s=Math.round(s);return Math.floor(s/60)+":"+pad(s%60);};
+  const minToHM=m=>{m=Math.round(m);const h=Math.floor(m/60);return h?h+":"+pad(m%60):m+"m";};
+  const stars=n=>"★".repeat(n)+"☆".repeat(5-n);
+
+  // goal-derived required paces
+  function goalSplits(g){
+    const run=g.total-g.swim-g.bike-g.trans;
+    return { runPace:secToPace(run*60/CONFIG.race.run_km*1),   // sec/km
+             runTotal:minToHM(run),
+             swimPer100:secToPace(g.swim*60/(CONFIG.race.swim_m/100)),
+             swimTotal:minToHM(g.swim),
+             bikeSpeed:(CONFIG.race.bike_km/(g.bike/60)).toFixed(1),
+             bikeTotal:minToHM(g.bike) };
+  }
+  const PACE_TAG=()=>CONFIG.goals.map(g=>goalSplits(g).runPace).join(" · ")+" (sub-6 · sub-5:30 · sub-5)";
+
+  // fuel string for sessions over the threshold duration
+  function fuelLine(mins){
+    if(mins<CONFIG.fuel.minMinutes) return null;
+    const h=mins/60, f=CONFIG.fuel;
+    return "💧 Fuel: ~"+Math.round(h*f.carbLow)+"–"+Math.round(h*f.carbHigh)+"g carbs · ~"
+      +r50(h*f.fluidLow)+"–"+r50(h*f.fluidHigh)+"ml fluid · ~"+r50(h*f.sodium)
+      +"mg sodium. Practise race fuel — nothing new on race day.";
+  }
+  const rideMins=(km,ph)=>Math.round(km/(ph==="peak"?29:ph==="build"?26:24)*60);
+
+  /* -------------------- session templates --------------------
+     each returns { title, effort, dur, target, steps:[{k,v}], purpose, fuelMins, stars } */
+  function swimSess(m,ph,secondary){
+    if(secondary) return {title:"Swim — easy aerobic",effort:"easy",dur:r50(m*0.6)+"m",
+      target:"Relaxed, smooth stroke — recovery pace",
+      steps:[{k:"Set",v:"Easy continuous + a little drill work. Nothing hard."}],
+      purpose:"Extra easy swim volume with zero cost — technique and feel, not fitness.",fuelMins:0,stars:2};
+    if(ph==="base") return {title:"Swim — technique + base",effort:"easy",dur:m+"m",
+      target:"Easy throughout · focus on form",
+      steps:[{k:"Warm-up",v:"200m easy"},{k:"Drills",v:"4 × 50m (catch, breathing, single-arm)"},{k:"Main",v:(m-500)+"m easy continuous"},{k:"Cool-down",v:"100m easy"}],
+      purpose:"Grooves efficient form so distance comes cheaply later. You're a strong swimmer — this leg is about smoothness, not effort.",fuelMins:0,stars:3};
+    if(ph==="build") return {title:"Swim — endurance set",effort:"mod",dur:m+"m",
+      target:"Steady, controlled — even pace across reps",
+      steps:[{k:"Warm-up",v:"300m easy + 4 × 50m build"},{k:"Main",v:"4–6 × 200–250m steady, 15s rest"},{k:"Cool-down",v:"200m easy"}],
+      purpose:"Builds the ability to hold pace when tired — hold the same time on the last rep as the first.",fuelMins:0,stars:3};
+    const sp=goalSplits(CONFIG.goals[0]).swimPer100+" / "+goalSplits(CONFIG.goals[1]).swimPer100+" / "+goalSplits(CONFIG.goals[2]).swimPer100;
+    return {title:"Swim — race-prep",effort:"mod",dur:m+"m",
+      target:"Race pace /100m — "+sp+" (sub-6 · sub-5:30 · sub-5)",
+      steps:[{k:"Warm-up",v:"300m easy"},{k:"Main",v:"Continuous 1.9k OR 10 × 100m at goal pace, 15s rest"},{k:"Open water",v:"Swap in a wetsuit sea swim when you can — sighting + cold practice"},{k:"Cool-down",v:"200m easy"}],
+      purpose:"Locks in race pace and open-water skills. The 1.9k should feel controlled, not a fight.",fuelMins:0,stars:4};
+  }
+  function bikeMid(ph,dl){
+    const min=dl?40:(ph==="peak"?70:ph==="build"?60:50);
+    if(ph==="base") return {title:"Bike — easy spin",effort:"easy",dur:min+" min",
+      target:"Easy · HR <130 · smooth high cadence",
+      steps:[{k:"Session",v:min+" min relaxed. Gym bike or trainer if it's wet/dark out."}],
+      purpose:"Low-cost aerobic volume and pedalling economy. Keep it genuinely easy.",fuelMins:0,stars:2};
+    const sets=dl?3:5;
+    return {title:"Bike — intervals",effort:"hard",dur:min+" min",
+      target:"Hard by effort · HR 150+ (let it lag, push the effort)",
+      steps:[{k:"Warm-up",v:"15 min easy building to Z2 + 3 × 30s fast cadence"},{k:"Main",v:sets+" × 3–4 min hard, 3 min easy spin between"},{k:"Cool-down",v:"10 min easy"}],
+      purpose:"Raises the effort you can sustain on the bike so race pace costs you less. Gym bike/trainer is ideal for holding the intervals.",fuelMins:0,stars:4};
+  }
+  function bikeLong(km,ph,sim){
+    const mins=rideMins(km,ph);
+    if(ph==="base") return {title:"Long ride — easy",effort:"easy",dur:"~"+km+"k · ~"+minToHM(mins),
+      target:"Conversational · HR <130 · time in the saddle",
+      steps:[{k:"Ride",v:"~"+km+"k steady and easy outdoors when dry; gym bike if grim."}],
+      purpose:"Saddle time is the whole point — your body learning to be on the bike for hours. Effort stays easy.",fuelMins:mins,stars:3};
+    if(ph==="build") return {title:"Long ride — mostly easy",effort:"easy",dur:"~"+km+"k · ~"+minToHM(mins),
+      target:"Mostly easy · last 20 min at steady effort",
+      steps:[{k:"Ride",v:"~"+km+"k — easy for the bulk, lift to steady for the final 20 min."}],
+      purpose:"Extends your aerobic range and starts teaching a strong finish on tiring legs.",fuelMins:mins,stars:3};
+    return {title:sim?"Long ride — RACE SIM":"Long ride — race effort",effort:"mod",dur:"~"+km+"k · ~"+minToHM(mins),
+      target:"Race effort · HR ~140–150 · the pace you could hold all day",
+      steps:[{k:"Ride",v:"~"+km+"k steady at race effort"+(sim?" in full race kit":"")+"."},sim?{k:"Execution",v:"Treat it like race day — pacing, fuel timing, kit. Don't prove fitness; practise execution."}:{k:"Aero",v:"Hold your race position for long blocks — get comfortable there."}],
+      purpose:sim?"Your dress rehearsal. The objective is a controlled, well-fuelled effort you could run off — not a hero ride.":"Rehearses the exact bike effort you'll hold on the day, and how to fuel it.",fuelMins:mins,stars:sim?5:4};
+  }
+  function runKey(n,ph,dl){
+    const min=dl?22:(ph==="peak"?48:ph==="build"?42:30);
+    if(ph==="base") return {title:"Run — easy",effort:"easy",dur:min+" min",
+      target:"HR <119 · ~6:30/km+ · full-sentence talking pace",
+      steps:[{k:"Run",v:min+" min genuinely easy. Run-walk if HR drifts up."}],
+      purpose:"Easy by design — builds the aerobic base that raises your thresholds and keeps you injury-free. This is the medicine, not filler.",fuelMins:0,stars:2};
+    if(ph==="build"){const t=dl?8:Math.min(22,12+(n-13));return {title:"Run — tempo",effort:"hard",dur:min+" min",
+      target:"Comfortably hard · HR ~145–155 · faster than easy (~5:30/km now; your Garmin will pin it)",
+      steps:[{k:"Warm-up",v:"10 min easy, HR <119"},{k:"Main",v:t+" min comfortably hard — push by effort, clearly faster than your easy pace"},{k:"Cool-down",v:"5 min easy"}],
+      purpose:"Works your sustainable hard effort — the direct fix for the low thresholds your lab test flagged. The hard block grows week to week; this is your one hard run.",fuelMins:0,stars:4};}
+    const t=dl?10:Math.min(30,18+(n-25)*2);return {title:"Run — race pace",effort:"race",dur:min+" min",
+      target:"Goal pace — "+PACE_TAG(),
+      steps:[{k:"Warm-up",v:"12 min easy"},{k:"Main",v:t+" min at your goal race pace (faster than easy; the point is holding it)"},{k:"Cool-down",v:"5 min easy"}],
+      purpose:"Rehearses race day. Hold the pace and log your HR — as it settles lower at that pace over the weeks, your goal firms up. The race-pace block grows toward race distance.",fuelMins:min>=80?min:0,stars:5};
+  }
+  function runLong(min){return {title:"Run — long, easy",effort:"easy",dur:min+" min",
+    target:"HR <119 · ~6:30/km+ · talk the whole way",
+    steps:[{k:"Run",v:min+" min easy. Time on feet is the goal — resist pushing it."}],
+    purpose:"The single biggest lever on your endurance. Keep it easy and your easy pace quietly gets faster week over week.",fuelMins:min>=80?min:0,stars:3};}
+  function brick(ph,dl,sim){
+    const min=dl?10:(ph==="peak"?20:15);
+    if(ph==="peak") return {title:sim?"Brick run — RACE SIM":"Brick run — race pace",effort:"race",dur:min+" min",
+      target:"Goal pace after 5 min — "+PACE_TAG(),
+      steps:[{k:"Off the bike",v:"Straight into it — no sitting down"},{k:"Settle",v:"5 min controlled, don't chase pace (legs feel awful — normal)"},{k:"Main",v:(min-5)+" min at goal race pace"}],
+      purpose:"Running your number on dead legs IS the race. The first 5 minutes are the skill — control them and the pace comes.",fuelMins:0,stars:5};
+    return {title:"Brick run — easy",effort:"easy",dur:min+" min",
+      target:"Easy off the bike · concrete legs are normal",
+      steps:[{k:"Off the bike",v:min+" min easy jog immediately after the ride"}],
+      purpose:"Teaches your legs the bike-to-run switch. Keep it easy — you're building the neural link, not fitness.",fuelMins:0,stars:4};
+  }
+  const strUpper=t=>({title:"Strength — "+t,effort:"",dur:"",target:"",steps:[],
+    purpose:"Your normal upper-body hypertrophy. Barely conflicts with the endurance work — this is how the physique stays.",fuelMins:0,stars:2});
+  const strLower=ph=>({title:ph==="peak"||ph==="taper"?"Strength — legs (maintain)":"Strength — legs + plyo",effort:"",dur:"",target:"",
+    steps:[{k:"Do",v:ph==="peak"||ph==="taper"?"Low volume: single-leg + calf/Achilles to protect the run. Drop the heavy stuff.":"Heavier & low-rep squat/hinge + box jumps, pogos, single-leg, calf/Achilles."}],
+    purpose:"Injury-proofs the run and holds leg power. Low volume and kept off your long ride/run days on purpose.",fuelMins:0,stars:2});
+  const restSurf=()=>({title:"Rest or surf",effort:"",dur:"",target:"",steps:[],purpose:"Active recovery — an easy surf is perfect. No hard efforts.",fuelMins:0,stars:1});
+
+  /* -------------------- build the weeks -------------------- */
+  function buildSessions(n){
+    const ph=PHASE(n),dl=DELOAD.has(n),sim=SIM.has(n),S=[];
+    const add=(day,type,cls,badge,o,opt)=>S.push(Object.assign({id:"w"+n+"-"+day+"-"+type,day,cls,badge,opt:!!opt},o));
+    if(n===34){ // race week
+      add("Mon","swim","d-swim","SW",{title:"Swim — shake-out",effort:"easy",dur:"800m",target:"Easy + a few smooth pick-ups",steps:[],purpose:"Loosen, don't tire.",stars:2});
+      add("Tue","run","d-run","RUN",{title:"Run — opener",effort:"mod",dur:"20 min",target:"Easy + 3 × 20s strides at race pace",steps:[],purpose:"Wake the legs up without fatigue.",stars:2});
+      add("Wed","bike","d-bike","BK",{title:"Bike — opener",effort:"mod",dur:"30–40 min",target:"Easy + 3 × 1 min at race effort",steps:[],purpose:"Sharpen and check the bike over.",stars:2});
+      add("Thu","rest","d-rest","REST",{title:"Travel / rest",effort:"",dur:"",target:"",steps:[{k:"Pack",v:"Wetsuit, goggles, race kit, gels, tri suit, watch charger"}],purpose:"Easy day, legs up.",stars:1},true);
+      add("Fri","swim","d-swim","SW",{title:"Swim — 10 min + rest",effort:"easy",dur:"10 min",target:"Short loosener, then feet up",steps:[],purpose:"Lay everything out for tomorrow.",stars:1});
+      add("Sat","race","d-race","RACE",{title:"🏁 RACE — Vilamoura 70.3",effort:"race",dur:"1.9k / 90k / 21.1k",target:"See the race-day plan card up top",steps:[{k:"Swim",v:"Easy, don't go out hard"},{k:"Bike",v:"Steady race effort, fuel early"},{k:"Run",v:"By feel and your practised pace"}],purpose:"You built this. Execute it and enjoy it.",stars:5});
+      add("Sun","rest","d-rest","REST",{title:"Recover",effort:"",dur:"",target:"",steps:[],purpose:"You're a 70.3 finisher. Rest, eat, celebrate.",stars:1},true);
+      return S;
+    }
+    add("Mon","swim","d-swim","SW",swimSess(SWIM[n-1],ph,false));
+    add("Mon","strA","d-str","STR",strUpper("chest & arms"));
+    add("Tue","run","d-run","RUN",runKey(n,ph,dl));
+    add("Wed","bike","d-bike","BK",bikeMid(ph,dl));
+    add("Wed","strL","d-str","STR",strLower(ph));
+    add("Thu","swim","d-swim","SW",swimSess(SWIM[n-1],ph,true));
+    add("Thu","strB","d-str","STR",strUpper("shoulders & back"));
+    add("Fri","rest","d-rest","REST",restSurf(),true);
+    add("Sat","bike","d-bike","BK",bikeLong(RIDE[n-1],ph,sim));
+    if(ph!=="base") add("Sat","brick","d-run","RUN",brick(ph,dl,sim));
+    add("Sun","run","d-run","RUN",runLong(RUN[n-1]));
+    return S;
+  }
+  const WEEKS=[];
+  for(let n=1;n<=34;n++){const ws=weekStart(n),we=new Date(ws.getTime()+6*DAY),ph=PHASE(n),dl=DELOAD.has(n);
+    WEEKS.push({n,ws,we,ph,dl,dates:fmtDate(ws)+" – "+fmtDate(we),
+      focus:OVER[n]||(dl?"Recovery week — let it absorb":FOCUS[ph]),sessions:buildSessions(n)});}
+  const ALL_IDS=WEEKS.flatMap(w=>w.sessions.filter(s=>!s.opt).map(s=>s.id));
+
+  const MILESTONES=[["ms-run30","First easy 30-min run by heart rate"],["ms-swim1k","First 1k continuous swim"],
+    ["ms-ride50","First 50k ride"],["ms-brick","First brick run off the bike"],["ms-ride70","First 70k ride"],
+    ["ms-ride90","First full 90k ride"],["ms-brick2h","First 2-hour brick day"],["ms-sim","First 70.3 race simulation"],
+    ["ms-fuel","Race-fuel strategy dialled in"],["ms-ready","Race-ready — into the taper"]];
+
+  /* -------------------- state -------------------- */
+  let done=new Set(); let cur=Object.assign({},CONFIG.current); let selGoal=1;
+  try{const raw=localStorage.getItem(STORE);if(raw){const d=JSON.parse(raw);done=new Set(d.done||[]);if(d.cur)cur=d.cur;if(d.goal!=null)selGoal=d.goal;}}catch(e){}
+  const save=()=>{try{localStorage.setItem(STORE,JSON.stringify({done:[...done],cur,goal:selGoal}));}catch(e){}};
+
+  const today=new Date();today.setHours(0,0,0,0);
+  const currentWeek=()=>{if(today<WEEKS[0].ws)return 1;for(const w of WEEKS)if(today>=w.ws&&today<=w.we)return w.n;return 34;};
+  const CUR=currentWeek();
+
+  /* -------------------- render -------------------- */
+  function renderHeaderStatic(){
+    $("#hEyebrow").textContent=CONFIG.race.name;
+    $("#raceline").textContent=CONFIG.race.dateLabel;
+    $("#distline").textContent=(CONFIG.race.swim_m/1000)+" km swim · "+CONFIG.race.bike_km+" km bike · "+CONFIG.race.run_km+" km run";
+  }
+  function renderCountdown(){
+    const days=Math.max(0,Math.ceil((RACE-today)/DAY)),wks=Math.ceil(days/7);
+    if(days<=0){$("#togo").textContent="🏁";$("#togoUnit").textContent="race day / done";document.title="Vilamoura 70.3 — Race day";}
+    else if(days>14){$("#togo").textContent=wks;$("#togoUnit").textContent="weeks to race";document.title=wks+" weeks · Vilamoura 70.3";}
+    else{$("#togo").textContent=days;$("#togoUnit").textContent=days===1?"day to race":"days to race";document.title=days+" days · Vilamoura 70.3";}
+  }
+  function renderToday(){
+    const el=$("#today"), dn=DAY_NAMES[today.getDay()];
+    const dayLong=today.toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"short"});
+    if(today<WEEKS[0].ws){
+      el.className="today";
+      el.innerHTML=`<div class="today-h"><h2>Today · ${dayLong}</h2><span>Starts ${fmtDate(WEEKS[0].ws)}</span></div><p class="today-msg">Plan hasn't kicked off yet — bank the rest.</p>`;
+      return;
+    }
+    if(today>RACE){
+      el.className="today today-done";
+      el.innerHTML=`<div class="today-h"><h2>🏁 Race done</h2></div><p class="today-msg">Hope Vilamoura was brilliant. Time to recover.</p>`;
+      return;
+    }
+    const w=WEEKS[CUR-1], sessions=w.sessions.filter(s=>s.day===dn);
+    const required=sessions.filter(s=>!s.opt);
+    const doneCount=required.filter(s=>done.has(s.id)).length;
+    const allDone=required.length>0&&doneCount===required.length;
+    const body=sessions.length?sessions.map(sessionHTML).join(""):`<p class="today-msg">Rest day — feet up, maybe surf.</p>`;
+    const prog=required.length?`${doneCount}/${required.length} done`:"Rest day";
+    el.className="today"+(allDone?" today-done":"");
+    el.innerHTML=`<div class="today-h"><h2>Today · ${dayLong}</h2><span>Week ${w.n} · ${prog}</span></div><div class="today-body">${body}</div>`;
+  }
+  function renderPhases(){
+    const defs=[["base","Base","Wk 1–12"],["build","Build","Wk 13–24"],["peak","Peak","Wk 25–32"],["taper","Taper","Wk 33–34"]];
+    const c=PHASE(CUR);
+    $("#phases").innerHTML=defs.map(d=>`<div class="phase ${d[0]===c?"on":""}">${d[1]}<small>${d[2]}</small></div>`).join("");
+  }
+  function renderSplits(){
+    $("#splits").innerHTML=CONFIG.goals.map(g=>{const s=goalSplits(g);
+      return `<div class="split"><div class="sg">${g.label}</div><div class="row">
+        <span>🏊 <u>${s.swimPer100}</u>/100m · ${s.swimTotal}</span>
+        <span>🚴 <u>${s.bikeSpeed}</u> km/h · ${s.bikeTotal}</span>
+        <span>🏃 <u>${s.runPace}</u>/km · ${s.runTotal}</span></div></div>`;}).join("")
+      + `<p style="font-size:12px;color:#9db2b6;margin:10px 2px 0">Threshold now ~${CONFIG.thresholdPaceNow}/km — every goal pace is faster than that today. The build drags your threshold down toward race pace; the Peak race-pace sessions are the test.</p>`;
+  }
+  function renderCalc(){
+    const gb=$("#goalbtns");
+    gb.innerHTML=CONFIG.goals.map((g,i)=>`<button data-g="${i}" class="${i===selGoal?"on":""}">${g.label}</button>`).join("");
+    const g=CONFIG.goals[selGoal];
+    $("#swSld").value=g.swim; $("#bkSld").value=g.bike;
+    ["curRun","curSwim","curBike"].forEach(id=>{$("#"+id).value=cur[id.replace("cur","").toLowerCase()]||"";});
+    calc();
+  }
+  function calc(){
+    const g=CONFIG.goals[selGoal], sw=+$("#swSld").value, bk=+$("#bkSld").value;
+    $("#swVal").textContent=minToHM(sw); $("#bkVal").textContent=minToHM(bk);
+    const runMin=g.total-sw-bk-g.trans;
+    $("#oSwim").textContent=secToPace(sw*60/(CONFIG.race.swim_m/100));
+    $("#oBike").textContent=(CONFIG.race.bike_km/(bk/60)).toFixed(1);
+    if(runMin<=0){$("#oRun").textContent="—";$("#gapline").textContent="Swim+bike already use the whole budget — ease them off.";$("#gapline").className="gapline no";return;}
+    const reqRunSec=runMin*60/CONFIG.race.run_km;
+    $("#oRun").textContent=secToPace(reqRunSec);
+    // gap vs current run pace
+    const c=$("#curRun").value.trim();
+    if(c){const cs=paceToSec(c),diff=Math.round(cs-reqRunSec);
+      if(diff<=0){$("#gapline").textContent="Your run is already at "+g.label+" pace ("+secToPace(reqRunSec)+"/km). 🟢";$("#gapline").className="gapline ok";}
+      else{$("#gapline").textContent="You're "+diff+" s/km off "+g.label+" — need "+secToPace(reqRunSec)+"/km, currently "+secToPace(cs)+"/km.";$("#gapline").className="gapline no";}
+    } else {$("#gapline").textContent="Enter your current run pace to see the gap.";$("#gapline").className="gapline";}
+  }
+  function renderRaceDay(){
+    const g=CONFIG.goals[selGoal],s=goalSplits(g);
+    $("#raceday").innerHTML=`<p>Plan for your selected goal (<b>${g.label}</b> — change it in the calculator card).</p>
+      <div class="leg"><b>🏊 Swim — 1.9k</b>Target ~${s.swimPer100}/100m. Start controlled, settle into rhythm, sight every 6–8 strokes. Don't burn matches in the first 200m.</div>
+      <div class="leg"><b>🔄 T1</b>Wetsuit off, helmet on before you touch the bike. Calm and methodical beats frantic.</div>
+      <div class="leg"><b>🚴 Bike — 90k</b>Hold ~${s.bikeSpeed} km/h / steady race effort (HR ~140–150). Fuel from 15 min in: ~60–80g carbs/hr, drink to thirst. Resist going hard early — you run off this.</div>
+      <div class="leg"><b>🔄 T2</b>Bike racked, shoes on, go. Expect heavy legs for 5 min — it passes.</div>
+      <div class="leg"><b>🏃 Run — 21.1k</b>Target ~${s.runPace}/km. First 5k slightly easier than goal, settle 5–15k on pace, race the last 6k by feel. Keep taking on carbs.</div>`;
+  }
+  function renderWhy(){
+    const items=[
+      ["Why is easy actually easy?","Below ~119 bpm you build capillaries, mitochondria and fat-burning without much fatigue — so you can do lots of it. Volume is what raises your thresholds; you can only bank volume if it's easy."],
+      ["What is threshold work?","Effort around the fastest pace you can hold roughly steady (~HR 150–155 for you). Training it lifts the pace you can sustain before lactate spikes — your biggest limiter right now."],
+      ["Why do bricks hurt?","After cycling, blood's pooled in your cycling muscles and your legs are used to a spinning motion — so the first minutes of running feel awful and heavy. Practising it trains the switch so race day isn't a shock."],
+      ["Why race by pace, not HR, on hard days?","Heart rate lags 30–60s behind effort and drifts up over a session. For intervals and race pace it'll always be 'wrong' — so push by pace and feel, and keep HR for governing easy days."],
+      ["Why practise nutrition?","Your gut is trainable. Taking 60–80g carbs/hr in training teaches it to absorb fuel while you work — skip this and you'll bonk or cramp on race day no matter how fit you are."],
+      ["What's a negative split?","Second half faster than the first. Starting controlled and finishing strong is almost always faster overall than going out hard and fading — especially on the run."]
+    ];
+    $("#why").innerHTML=items.map(i=>`<details class="sub"><summary>${i[0]}</summary><p>${i[1]}</p></details>`).join("");
+  }
+  function renderMilestones(){
+    $("#milestones").innerHTML=MILESTONES.map(m=>{const on=done.has(m[0]);
+      return `<div class="ms ${on?"on":""}"><div class="check ${on?"on":""}" role="button" tabindex="0" data-id="${m[0]}" aria-pressed="${on}" aria-label="toggle"></div><span>${m[1]}</span></div>`;}).join("");
+  }
+  function pct(w){const t=w.sessions.filter(s=>!s.opt),d=t.filter(s=>done.has(s.id)).length;return{d,t:t.length,p:t.length?Math.round(d/t.length*100):0};}
+  function sessionHTML(s){
+    const on=done.has(s.id);
+    const pill=s.effort?`<span class="pill e-${s.effort}">${EFF[s.effort]}</span>`:"";
+    const meta=(s.dur?s.dur:"")+(s.dur&&s.stars?" · ":"")+(s.stars?'<span title="race relevance">'+stars(s.stars)+"</span>":"");
+    const steps=s.steps&&s.steps.length?`<ul class="steps">${s.steps.map(x=>`<li><b>${x.k}:</b> ${x.v}</li>`).join("")}</ul>`:"";
+    const fuel=fuelLine(s.fuelMins||0); const fuelH=fuel?`<div class="fuel">${fuel}</div>`:"";
+    const tgt=s.target?`<div class="starget">🎯 ${s.target}</div>`:"";
+    return `<div class="sess ${on?"on":""} ${s.opt?"opt":""}">
+      <div class="disc ${s.cls}">${s.badge}</div>
+      <div class="txt"><h4><span class="htext">${s.title}</span>${pill}</h4>
+        ${meta?`<div class="smeta">${meta}</div>`:""}${tgt}${steps}${fuelH}
+        <div class="why"><b>Why:</b> ${s.purpose}</div></div>
+      <div class="check ${on?"on":""}" role="button" tabindex="0" data-id="${s.id}" aria-pressed="${on}" aria-label="Mark done"></div>
+    </div>`;
+  }
+  function renderWeeks(){
+    const order=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+    $("#weeks").innerHTML=WEEKS.map(w=>{
+      const pr=pct(w),open=w.n===CUR,map={};
+      w.sessions.forEach(s=>{(map[s.day]=map[s.day]||[]).push(s);});
+      const rows=order.filter(d=>map[d]).map(d=>`<div class="day">${d}</div>`+map[d].map(sessionHTML).join("")).join("");
+      return `<div class="week ${open?"open":""} ${w.n===CUR?"now":""}" data-n="${w.n}">
+        <div class="whead" data-toggle="${w.n}">
+          <div class="wnum"><small>Week</small><b>${w.n}</b></div>
+          <div class="wmeta"><div class="wt"><span class="tag ${w.ph}">${PHASE_NAME[w.ph]}</span><h3>${w.dates}</h3></div><div class="wf">${w.focus}</div></div>
+          <div><div class="ring ${pr.p===100?"done":""}" style="--p:${pr.p}"><i>${pr.p===100?"✓":pr.d+"/"+pr.t}</i></div></div>
+        </div>
+        <div class="wbody">${rows}</div></div>`;
+    }).join("");
+  }
+  function renderProgress(){
+    const total=ALL_IDS.length,d=ALL_IDS.filter(id=>done.has(id)).length,p=total?Math.round(d/total*100):0;
+    $("#obar").style.width=p+"%";$("#opctL").textContent=p+"% complete";$("#opctR").textContent=d+" / "+total+" sessions";
+  }
+  function updateWeekRing(n){const w=WEEKS[n-1],pr=pct(w),el=document.querySelector(`.week[data-n="${n}"] .ring`);if(!el)return;
+    el.style.setProperty("--p",pr.p);el.classList.toggle("done",pr.p===100);el.querySelector("i").textContent=pr.p===100?"✓":pr.d+"/"+pr.t;}
+
+  /* -------------------- events -------------------- */
+  function toggle(id){
+    if(done.has(id))done.delete(id);else done.add(id);save();
+    document.querySelectorAll(`.check[data-id="${id}"]`).forEach(c=>{const on=done.has(id);
+      c.classList.toggle("on",on);c.setAttribute("aria-pressed",on);
+      const row=c.closest(".sess")||c.closest(".ms");if(row)row.classList.toggle("on",on);});
+    if(id.startsWith("ms-"))return;
+    updateWeekRing(parseInt(id.split("-")[0].slice(1),10));renderProgress();renderToday();
+  }
+  document.addEventListener("click",e=>{
+    const chk=e.target.closest(".check");if(chk){toggle(chk.dataset.id);return;}
+    const gb=e.target.closest("[data-g]");if(gb){selGoal=+gb.dataset.g;save();renderCalc();renderRaceDay();return;}
+    const hd=e.target.closest("[data-toggle]");if(hd)hd.closest(".week").classList.toggle("open");
+  });
+  document.addEventListener("keydown",e=>{if((e.key==="Enter"||e.key===" ")&&e.target.classList.contains("check")){e.preventDefault();toggle(e.target.dataset.id);}});
+  document.addEventListener("input",e=>{
+    if(e.target.id==="swSld"||e.target.id==="bkSld"){calc();}
+    if(["curRun","curSwim","curBike"].includes(e.target.id)){cur[e.target.id.replace("cur","").toLowerCase()]=e.target.value.trim();save();calc();}
+  });
+  $("#reset").addEventListener("click",()=>{if(confirm("Clear every tick and start fresh? This can't be undone.")){
+    done=new Set();save();renderToday();renderWeeks();renderProgress();renderMilestones();}});
+  $("#export").addEventListener("click",()=>{
+    const blob=new Blob([JSON.stringify({v:2,done:[...done],cur,goal:selGoal},null,2)],{type:"application/json"});
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="vilamoura703-backup.json";a.click();URL.revokeObjectURL(a.href);});
+  $("#importBtn").addEventListener("click",()=>$("#importFile").click());
+  $("#importFile").addEventListener("change",e=>{
+    const f=e.target.files[0];if(!f)return;
+    const r=new FileReader();r.onload=()=>{try{
+      const d=JSON.parse(r.result);if(!d.done)throw 0;
+      done=new Set(d.done);if(d.cur)cur=d.cur;if(d.goal!=null)selGoal=d.goal;save();
+      renderToday();renderWeeks();renderProgress();renderMilestones();renderCalc();renderRaceDay();
+    }catch(err){alert("Couldn't read that backup file.");}};
+    r.readAsText(f);e.target.value="";});
+
+  $("#tip").innerHTML="<b>This week is Week "+CUR+".</b> Coloured tag = the rule: green/amber go by heart rate, red/purple go by pace. Set your goal in the calculator card and the race-day plan updates to match.";
+
+  /* -------------------- go -------------------- */
+  renderHeaderStatic();renderCountdown();renderPhases();renderToday();renderSplits();renderCalc();renderRaceDay();renderWhy();renderMilestones();renderWeeks();renderProgress();
+})();
+</script>
+</body>
+</html>
